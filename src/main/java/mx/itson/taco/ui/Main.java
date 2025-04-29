@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import mx.itson.taco.entidades.Ingrediente;
 import mx.itson.taco.entidades.Receta;
 
 /**
@@ -34,7 +36,28 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         btnSelecionar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblPorciones = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblIngredientes = new javax.swing.JTable();
+        lblIngredientes = new javax.swing.JLabel();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,21 +68,70 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 102, 0));
+        jLabel1.setText("Recetario");
+
+        lblNombre.setText("...");
+
+        lblPorciones.setText("...");
+
+        tblIngredientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Cantidad", "Nombre"
+            }
+        ));
+        jScrollPane2.setViewportView(tblIngredientes);
+
+        lblIngredientes.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblIngredientes.setForeground(new java.awt.Color(255, 102, 0));
+        lblIngredientes.setText("Ingredientes");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(btnSelecionar)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(btnSelecionar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPorciones, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addComponent(lblIngredientes))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(232, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
                 .addComponent(btnSelecionar)
-                .addGap(45, 45, 45))
+                .addGap(18, 18, 18)
+                .addComponent(lblNombre)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblPorciones)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblIngredientes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -82,8 +154,19 @@ public class Main extends javax.swing.JFrame {
                     }
                 String contenido = content.toString();
                 
-                List<Receta> recetas = Receta.deserializar(contenido);
-                         
+                //List<Receta> recetas = Receta.deserializar(contenido);
+                Receta receta = Receta.deserializarObjecto(contenido);
+                lblNombre.setText(receta.getNombre());
+                lblPorciones.setText("Porciones: " + receta.getPorciones());
+                
+                DefaultTableModel modelo = (DefaultTableModel)tblIngredientes.getModel();
+                modelo.setRowCount(0);
+                for (Ingrediente i: receta.getIngredientes()){
+                    modelo.addRow(new Object[] {
+                        i.getCantidad(),
+                        i.getDescripcion()
+                    });
+                }         
             }
             catch (IOException ex) {
                         ex.printStackTrace();
@@ -128,5 +211,13 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSelecionar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblIngredientes;
+    private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblPorciones;
+    private javax.swing.JTable tblIngredientes;
     // End of variables declaration//GEN-END:variables
 }

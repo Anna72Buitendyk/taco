@@ -105,4 +105,19 @@ public class Receta {
         return recetas;
     }
     
+    public static Receta deserializarObjecto(String json){
+        Receta receta = new Receta();
+        try{
+            Gson gson = new Gson();
+            receta = gson.fromJson(json, Receta.class);           
+        }
+        catch(Exception ex){
+            System.out.println("Error en deserializacion");
+        }
+        
+        return receta;
+        
+    }
+    
+    
 }
